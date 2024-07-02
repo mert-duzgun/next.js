@@ -438,11 +438,6 @@ export interface ExperimentalConfig {
    */
   trustHostHeader?: boolean
 
-  /**
-   * Uses an IPC server to dedupe build-time requests to the cache handler
-   */
-  staticWorkerRequestDeduping?: boolean
-
   useWasmBinary?: boolean
 
   /**
@@ -926,7 +921,7 @@ export const defaultConfig: NextConfig = {
   output: !!process.env.NEXT_PRIVATE_STANDALONE ? 'standalone' : undefined,
   modularizeImports: undefined,
   experimental: {
-    flyingShuttle: false,
+    flyingShuttle: Boolean(process.env.NEXT_PRIVATE_FLYING_SHUTTLE),
     prerenderEarlyExit: true,
     serverMinification: true,
     serverSourceMaps: false,
