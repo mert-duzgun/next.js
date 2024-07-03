@@ -503,7 +503,10 @@ async function createComponentTreeInternal({
         // identical even without it. But maybe there's some findDOMNode-related
         // reason that I'm not aware of, so I'm leaving it as-is out of extreme
         // caution, for now.
-        <>{parallelRouteProps.children}</>,
+        <>
+          {layerAssets}
+          {parallelRouteProps.children}
+        </>,
         loadingData,
       ],
       styles: layerAssets,
@@ -529,11 +532,14 @@ async function createComponentTreeInternal({
       seedData: [
         actualSegment,
         parallelRouteCacheNodeSeedData,
-        <Postpone
-          prerenderState={staticGenerationStore.prerenderState}
-          reason='dynamic = "force-dynamic" was used'
-          route={staticGenerationStore.route}
-        />,
+        <>
+          {layerAssets}
+          <Postpone
+            prerenderState={staticGenerationStore.prerenderState}
+            reason='dynamic = "force-dynamic" was used'
+            route={staticGenerationStore.route}
+          />
+        </>,
         loadingData,
       ],
       styles: layerAssets,
@@ -615,6 +621,7 @@ async function createComponentTreeInternal({
       actualSegment,
       parallelRouteCacheNodeSeedData,
       <>
+        {layerAssets}
         {segmentElement}
         {/* This null is currently critical. The wrapped Component can render null and if there was not fragment
             surrounding it this would look like a pending tree data state on the client which will cause an error
