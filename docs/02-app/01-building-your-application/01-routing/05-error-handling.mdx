@@ -22,8 +22,6 @@ Use the `useActionState` hook (previously `useFormState`) to manage the state of
 ```tsx filename="app/actions.ts" switcher
 'use server'
 
-import { redirect } from 'next/navigation'
-
 export async function createUser(prevState: any, formData: FormData) {
   const res = await fetch('https://...')
   const json = await res.json()
@@ -32,14 +30,12 @@ export async function createUser(prevState: any, formData: FormData) {
     return { message: 'Please enter a valid email' }
   }
 
-  redirect('/dashboard')
+  return json
 }
 ```
 
 ```jsx filename="app/actions.js" switcher
 'use server'
-
-import { redirect } from 'next/navigation'
 
 export async function createUser(prevState, formData) {
   const res = await fetch('https://...')
@@ -49,7 +45,7 @@ export async function createUser(prevState, formData) {
     return { message: 'Please enter a valid email' }
   }
 
-  redirect('/dashboard')
+  return json
 }
 ```
 
@@ -131,6 +127,38 @@ export default async function Page() {
 
   if (!res.ok) {
     return 'There was an error.'
+  }
+
+  return '...'
+}
+```
+
+Or
+
+```tsx filename="app/page.tsx" switcher
+import { redirect } from 'next/navigation'
+
+export default async function Page() {
+  const res = await fetch(`https://...`)
+  const data = await res.json()
+
+  if (!res.ok) {
+    redirect("/dashboard")
+  }
+
+  return '...'
+}
+```
+
+```jsx filename="app/page.js" switcher
+import { redirect } from 'next/navigation'
+
+export default async function Page() {
+  const res = await fetch(`https://...`)
+  const data = await res.json()
+
+  if (!res.ok) {
+    redirect('/dashboard')
   }
 
   return '...'
